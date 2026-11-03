@@ -1,0 +1,182 @@
+-- CafeQuanLy — đúng 15 bảng
+USE CafeQuanLy;
+GO
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+CREATE TABLE dbo.VaiTro (
+    Id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    Code NVARCHAR(32) NOT NULL UNIQUE,
+    Name NVARCHAR(100) NOT NULL,
+    IsActive BIT NOT NULL CONSTRAINT DF_VaiTro_IsActive DEFAULT (1)
+);
+GO
+
+CREATE TABLE dbo.NhanVien (
+    Id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    RoleId INT NOT NULL REFERENCES dbo.VaiTro(Id),
+    Username NVARCHAR(64) NOT NULL UNIQUE,
+    PasswordHash NVARCHAR(256) NOT NULL,
+    FullName NVARCHAR(150) NOT NULL,
+    Phone NVARCHAR(20) NULL,
+    IsActive BIT NOT NULL CONSTRAINT DF_NhanVien_IsActive DEFAULT (1),
+    CreatedAt DATETIME2(0) NOT NULL CONSTRAINT DF_NhanVien_CreatedAt DEFAULT (SYSUTCDATETIME())
+);
+GO
+
+CREATE TABLE dbo.DanhMuc (
+    Id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    Name NVARCHAR(100) NOT NULL,
+    DisplayOrder INT NOT NULL CONSTRAINT DF_DanhMuc_DisplayOrder DEFAULT (0),
+    IsActive BIT NOT NULL CONSTRAINT DF_DanhMuc_IsActive DEFAULT (1)
+);
+GO
+
+CREATE TABLE dbo.SanPham (
+    Id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    CategoryId INT NOT NULL REFERENCES dbo.DanhMuc(Id),
+    Code NVARCHAR(32) NOT NULL UNIQUE,
+    Name NVARCHAR(150) NOT NULL,
+    Price DECIMAL(18,2) NOT NULL CONSTRAINT CK_SanPham_Price CHECK (Price >= 0),
+    IsSelling BIT NOT NULL CONSTRAINT DF_SanPham_IsSelling DEFAULT (1),
+    Note NVARCHAR(300) NULL
+);
+GO
+
+CREATE TABLE dbo.NguyenLieu (
+    Id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    Code NVARCHAR(32) NOT NULL UNIQUE,
+    Name NVARCHAR(150) NOT NULL,
+    Unit NVARCHAR(20) NOT NULL,              -- g, ml, cai
+    QuantityOnHand DECIMAL(18,3) NOT NULL CONSTRAINT DF_NguyenLieu_Qty DEFAULT (0),
+    MinQuantity DECIMAL(18,3) NOT NULL CONSTRAINT DF_NguyenLieu_Min DEFAULT (0),
+    IsActive BIT NOT NULL CONSTRAINT DF_NguyenLieu_IsActive DEFAULT (1)
+);
+GO
+
+CREATE TABLE dbo.CongThuc (
+    Id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    ProductId INT NOT NULL REFERENCES dbo.SanPham(Id),
+    IngredientId INT NOT NULL REFERENCES dbo.NguyenLieu(Id),
+    QuantityUsed DECIMAL(18,3) NOT NULL CONSTRAINT CK_CongThuc_Qty CHECK (QuantityUsed > 0),
+    CONSTRAINT UQ_CongThuc_Product_Ingredient UNIQUE (ProductId, IngredientId)
+);
+GO
+
+CREATE TABLE dbo.KhachHang (
+    Id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    FullName NVARCHAR(150) NOT NULL,
+    Phone NVARCHAR(20) NOT NULL UNIQUE,
+    Points INT NOT NULL CONSTRAINT DF_KhachHang_Points DEFAULT (0),
+    Note NVARCHAR(300) NULL,
+    CreatedAt DATETIME2(0) NOT NULL CONSTRAINT DF_KhachHang_CreatedAt DEFAULT (SYSUTCDATETIME())
+);
+GO
+
+CREATE TABLE dbo.CaLamViec (
+    Id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    OpenedByUserId INT NOT NULL REFERENCES dbo.NhanVien(Id),
+    ClosedByUserId INT NULL REFERENCES dbo.NhanVien(Id),
+    OpenedAt DATETIME2(0) NOT NULL CONSTRAINT DF_Ca_OpenedAt DEFAULT (SYSUTCDATETIME()),
+    ClosedAt DATETIME2(0) NULL,
+    OpeningCash DECIMAL(18,2) NOT NULL CONSTRAINT DF_Ca_OpeningCash DEFAULT (0),
+    ClosingCashActual DECIMAL(18,2) NULL,
+    Status NVARCHAR(16) NOT NULL CONSTRAINT DF_Ca_Status DEFAULT (N'Open'),
+    Notes NVARCHAR(300) NULL,
+    CONSTRAINT CK_Ca_Status CHECK (Status IN (N'Open', N'Closed'))
+);
+GO
+
+CREATE TABLE dbo.DonHang (
+    Id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    OrderNo NVARCHAR(32) NOT NULL UNIQUE,
+    ShiftId INT NULL REFERENCES dbo.CaLamViec(Id),
+    CashierId INT NOT NULL REFERENCES dbo.NhanVien(Id),
+    CustomerId INT NULL REFERENCES dbo.KhachHang(Id),
+    Status NVARCHAR(16) NOT NULL CONSTRAINT DF_DonHang_Status DEFAULT (N'Draft'),
+    SubTotal DECIMAL(18,2) NOT NULL CONSTRAINT DF_DonHang_Sub DEFAULT (0),
+    DiscountAmount DECIMAL(18,2) NOT NULL CONSTRAINT DF_DonHang_Disc DEFAULT (0),
+    TotalAmount DECIMAL(18,2) NOT NULL CONSTRAINT DF_DonHang_Total DEFAULT (0),
+    CreatedAt DATETIME2(0) NOT NULL CONSTRAINT DF_DonHang_CreatedAt DEFAULT (SYSUTCDATETIME()),
+    PaidAt DATETIME2(0) NULL,
+    CONSTRAINT CK_DonHang_Status CHECK (Status IN (N'Draft', N'Paid', N'Cancelled'))
+);
+GO
+
+CREATE TABLE dbo.ChiTietDonHang (
+    Id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    OrderId INT NOT NULL REFERENCES dbo.DonHang(Id),
+    ProductId INT NULL REFERENCES dbo.SanPham(Id),
+    ProductNameSnapshot NVARCHAR(150) NOT NULL,
+    UnitPrice DECIMAL(18,2) NOT NULL,
+    Quantity INT NOT NULL CONSTRAINT CK_CTDH_Qty CHECK (Quantity > 0),
+    LineTotal DECIMAL(18,2) NOT NULL,
+    Note NVARCHAR(200) NULL
+);
+GO
+
+CREATE TABLE dbo.ThanhToan (
+    Id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    OrderId INT NOT NULL UNIQUE REFERENCES dbo.DonHang(Id),
+    Method NVARCHAR(20) NOT NULL,            -- Cash / Transfer / Card
+    AmountDue DECIMAL(18,2) NOT NULL,
+    AmountReceived DECIMAL(18,2) NOT NULL,
+    ChangeAmount DECIMAL(18,2) NOT NULL CONSTRAINT DF_TT_Change DEFAULT (0),
+    PaidAt DATETIME2(0) NOT NULL CONSTRAINT DF_TT_PaidAt DEFAULT (SYSUTCDATETIME()),
+    CONSTRAINT CK_TT_Method CHECK (Method IN (N'Cash', N'Transfer', N'Card'))
+);
+GO
+
+CREATE TABLE dbo.PhieuNhapKho (
+    Id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    VoucherNo NVARCHAR(32) NOT NULL UNIQUE,
+    CreatedByUserId INT NOT NULL REFERENCES dbo.NhanVien(Id),
+    StockInDate DATE NOT NULL CONSTRAINT DF_PNK_Date DEFAULT (CAST(SYSUTCDATETIME() AS DATE)),
+    SupplierName NVARCHAR(150) NULL,
+    Note NVARCHAR(300) NULL,
+    TotalAmount DECIMAL(18,2) NOT NULL CONSTRAINT DF_PNK_Total DEFAULT (0),
+    CreatedAt DATETIME2(0) NOT NULL CONSTRAINT DF_PNK_CreatedAt DEFAULT (SYSUTCDATETIME())
+);
+GO
+
+CREATE TABLE dbo.ChiTietNhapKho (
+    Id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    StockInId INT NOT NULL REFERENCES dbo.PhieuNhapKho(Id),
+    IngredientId INT NOT NULL REFERENCES dbo.NguyenLieu(Id),
+    Quantity DECIMAL(18,3) NOT NULL CONSTRAINT CK_CTNK_Qty CHECK (Quantity > 0),
+    UnitCost DECIMAL(18,2) NOT NULL CONSTRAINT DF_CTNK_Cost DEFAULT (0),
+    LineAmount DECIMAL(18,2) NOT NULL
+);
+GO
+
+CREATE TABLE dbo.PhieuDieuChinh (
+    Id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    IngredientId INT NOT NULL REFERENCES dbo.NguyenLieu(Id),
+    AdjustedByUserId INT NOT NULL REFERENCES dbo.NhanVien(Id),
+    QuantityBefore DECIMAL(18,3) NOT NULL,
+    QuantityAfter DECIMAL(18,3) NOT NULL,
+    DeltaQuantity DECIMAL(18,3) NOT NULL,
+    Reason NVARCHAR(100) NOT NULL,           -- KiemKe / HaoHut / Huy / Khac
+    Note NVARCHAR(300) NULL,
+    CreatedAt DATETIME2(0) NOT NULL CONSTRAINT DF_PDC_CreatedAt DEFAULT (SYSUTCDATETIME())
+);
+GO
+
+CREATE TABLE dbo.CauHinhCuaHang (
+    Id INT NOT NULL PRIMARY KEY CONSTRAINT CK_CH_OneRow CHECK (Id = 1),
+    StoreName NVARCHAR(150) NOT NULL,
+    Address NVARCHAR(300) NULL,
+    Phone NVARCHAR(20) NULL,
+    VatPercent DECIMAL(5,2) NOT NULL CONSTRAINT DF_CH_Vat DEFAULT (0),
+    PointsPerThousand DECIMAL(9,2) NOT NULL CONSTRAINT DF_CH_Pts DEFAULT (1),
+    UpdatedAt DATETIME2(0) NOT NULL CONSTRAINT DF_CH_UpdatedAt DEFAULT (SYSUTCDATETIME())
+);
+GO
+
+CREATE INDEX IX_SanPham_CategoryId ON dbo.SanPham(CategoryId);
+CREATE INDEX IX_DonHang_CreatedAt ON dbo.DonHang(CreatedAt);
+CREATE INDEX IX_DonHang_Status ON dbo.DonHang(Status);
+CREATE INDEX IX_ChiTietDonHang_OrderId ON dbo.ChiTietDonHang(OrderId);
+CREATE INDEX IX_NguyenLieu_Name ON dbo.NguyenLieu(Name);
+GO
