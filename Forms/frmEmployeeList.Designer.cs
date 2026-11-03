@@ -1,0 +1,193 @@
+namespace winform_cuoi_ki
+{
+    partial class frmEmployeeList
+    {
+        private System.ComponentModel.IContainer components = null;
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null)) components.Dispose();
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+        private void InitializeComponent()
+        {
+            components = new System.ComponentModel.Container();
+            pnlToolbar = new Panel();
+            flpToolbar = new FlowLayoutPanel();
+            txtSearch = new TextBox();
+            btnSearch = new Button();
+            btnRefresh = new Button();
+            btnAdd = new Button();
+            btnSave = new Button();
+            btnToggleLock = new Button();
+            btnResetPassword = new Button();
+            splEmp = new SplitContainer();
+            dgvEmployees = new DataGridView();
+            colFullName = new DataGridViewTextBoxColumn();
+            colPhone = new DataGridViewTextBoxColumn();
+            colRole = new DataGridViewTextBoxColumn();
+            colUsername = new DataGridViewTextBoxColumn();
+            colEmpStatus = new DataGridViewTextBoxColumn();
+            pnlEmpDetail = new Panel();
+            lblFullName = new Label();
+            txtFullName = new TextBox();
+            lblPhone = new Label();
+            txtPhone = new TextBox();
+            lblRole = new Label();
+            cboRole = new ComboBox();
+            lblUsername = new Label();
+            txtUsername = new TextBox();
+            lblPassword = new Label();
+            txtPassword = new TextBox();
+            lblPasswordConfirm = new Label();
+            txtPasswordConfirm = new TextBox();
+            chkIsActive = new CheckBox();
+            lblNote = new Label();
+            txtNote = new TextBox();
+            stsEmp = new StatusStrip();
+            lblEmpCount = new ToolStripStatusLabel();
+            erpEmp = new ErrorProvider(components);
+            pnlToolbar.SuspendLayout();
+            flpToolbar.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splEmp).BeginInit();
+            splEmp.Panel1.SuspendLayout();
+            splEmp.Panel2.SuspendLayout();
+            splEmp.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvEmployees).BeginInit();
+            pnlEmpDetail.SuspendLayout();
+            stsEmp.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)erpEmp).BeginInit();
+            SuspendLayout();
+            pnlToolbar.Controls.Add(flpToolbar);
+            pnlToolbar.Dock = DockStyle.Top;
+            pnlToolbar.Name = "pnlToolbar";
+            pnlToolbar.Padding = new Padding(8);
+            pnlToolbar.Size = new Size(1000, 48);
+            flpToolbar.Controls.AddRange(new Control[] { txtSearch, btnSearch, btnRefresh, btnAdd, btnSave, btnToggleLock, btnResetPassword });
+            flpToolbar.Dock = DockStyle.Fill;
+            flpToolbar.Name = "flpToolbar";
+            flpToolbar.WrapContents = false;
+            txtSearch.Name = "txtSearch"; txtSearch.Size = new Size(180, 23); txtSearch.PlaceholderText = "Tên/SĐT/user";
+            btnSearch.Name = "btnSearch"; btnSearch.Size = new Size(60, 28); btnSearch.Text = "Tìm"; btnSearch.UseVisualStyleBackColor = true; btnSearch.Click += btnSearch_Click;
+            btnRefresh.Name = "btnRefresh"; btnRefresh.Size = new Size(80, 28); btnRefresh.Text = "Làm mới"; btnRefresh.UseVisualStyleBackColor = true; btnRefresh.Click += btnRefresh_Click;
+            btnAdd.Name = "btnAdd"; btnAdd.Size = new Size(70, 28); btnAdd.Text = "Thêm"; btnAdd.UseVisualStyleBackColor = true; btnAdd.Click += btnAdd_Click;
+            btnSave.Name = "btnSave"; btnSave.Size = new Size(70, 28); btnSave.Text = "Lưu"; btnSave.UseVisualStyleBackColor = true; btnSave.Click += btnSave_Click;
+            btnToggleLock.Name = "btnToggleLock"; btnToggleLock.Size = new Size(120, 28); btnToggleLock.Text = "Khóa tài khoản"; btnToggleLock.UseVisualStyleBackColor = true; btnToggleLock.Click += btnToggleLock_Click;
+            btnResetPassword.Name = "btnResetPassword"; btnResetPassword.Size = new Size(130, 28); btnResetPassword.Text = "Đặt lại mật khẩu"; btnResetPassword.UseVisualStyleBackColor = true; btnResetPassword.Click += btnResetPassword_Click;
+            splEmp.Dock = DockStyle.Fill;
+            splEmp.Location = new Point(0, 48);
+            splEmp.Name = "splEmp";
+            splEmp.Panel1.Controls.Add(dgvEmployees);
+            splEmp.Panel2.Controls.Add(pnlEmpDetail);
+            splEmp.Size = new Size(1000, 530);
+            splEmp.SplitterDistance = 640;
+            dgvEmployees.AllowUserToAddRows = false;
+            dgvEmployees.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvEmployees.Columns.AddRange(new DataGridViewColumn[] { colFullName, colPhone, colRole, colUsername, colEmpStatus });
+            dgvEmployees.Dock = DockStyle.Fill;
+            dgvEmployees.MultiSelect = false;
+            dgvEmployees.Name = "dgvEmployees";
+            dgvEmployees.ReadOnly = true;
+            dgvEmployees.RowHeadersVisible = false;
+            dgvEmployees.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvEmployees.SelectionChanged += dgvEmployees_SelectionChanged;
+            colFullName.HeaderText = "Họ tên"; colFullName.Name = "colFullName"; colFullName.ReadOnly = true;
+            colPhone.HeaderText = "SĐT"; colPhone.Name = "colPhone"; colPhone.ReadOnly = true;
+            colRole.HeaderText = "Vai trò"; colRole.Name = "colRole"; colRole.ReadOnly = true;
+            colUsername.HeaderText = "Tên đăng nhập"; colUsername.Name = "colUsername"; colUsername.ReadOnly = true;
+            colEmpStatus.HeaderText = "Trạng thái"; colEmpStatus.Name = "colEmpStatus"; colEmpStatus.ReadOnly = true;
+            pnlEmpDetail.Controls.AddRange(new Control[] { txtNote, lblNote, chkIsActive, txtPasswordConfirm, lblPasswordConfirm, txtPassword, lblPassword, txtUsername, lblUsername, cboRole, lblRole, txtPhone, lblPhone, txtFullName, lblFullName });
+            pnlEmpDetail.Dock = DockStyle.Fill;
+            pnlEmpDetail.Name = "pnlEmpDetail";
+            pnlEmpDetail.Padding = new Padding(12);
+            int y = 12;
+            void L(Label l, string t) { l.AutoSize = true; l.Location = new Point(12, y); l.Text = t; y += 22; }
+            void C(Control c, int h = 28) { c.Location = new Point(12, y); c.Width = 280; y += h + 6; }
+            lblFullName.Name = "lblFullName"; L(lblFullName, "Họ và tên");
+            txtFullName.Name = "txtFullName"; txtFullName.MaxLength = 150; C(txtFullName);
+            lblPhone.Name = "lblPhone"; L(lblPhone, "Số điện thoại");
+            txtPhone.Name = "txtPhone"; txtPhone.MaxLength = 15; C(txtPhone);
+            lblRole.Name = "lblRole"; L(lblRole, "Vai trò");
+            cboRole.Name = "cboRole"; cboRole.DropDownStyle = ComboBoxStyle.DropDownList; cboRole.Items.AddRange(new object[] { "Admin", "Quản lý", "Thu ngân", "Pha chế", "Kho" }); C(cboRole);
+            lblUsername.Name = "lblUsername"; L(lblUsername, "Tên đăng nhập");
+            txtUsername.Name = "txtUsername"; txtUsername.MaxLength = 50; C(txtUsername);
+            lblPassword.Name = "lblPassword"; L(lblPassword, "Mật khẩu");
+            txtPassword.Name = "txtPassword"; txtPassword.UseSystemPasswordChar = true; C(txtPassword);
+            lblPasswordConfirm.Name = "lblPasswordConfirm"; L(lblPasswordConfirm, "Nhập lại mật khẩu");
+            txtPasswordConfirm.Name = "txtPasswordConfirm"; txtPasswordConfirm.UseSystemPasswordChar = true; C(txtPasswordConfirm);
+            chkIsActive.Name = "chkIsActive"; chkIsActive.AutoSize = true; chkIsActive.Checked = true; chkIsActive.Text = "Tài khoản đang hoạt động"; C(chkIsActive, 24);
+            lblNote.Name = "lblNote"; L(lblNote, "Ghi chú");
+            txtNote.Name = "txtNote"; C(txtNote);
+            stsEmp.Items.AddRange(new ToolStripItem[] { lblEmpCount });
+            stsEmp.Name = "stsEmp";
+            stsEmp.Dock = DockStyle.Bottom;
+            lblEmpCount.Name = "lblEmpCount"; lblEmpCount.Spring = true; lblEmpCount.Text = "0 nhân viên";
+            erpEmp.ContainerControl = this;
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1000, 600);
+            Controls.Add(splEmp);
+            Controls.Add(pnlToolbar);
+            Controls.Add(stsEmp);
+            Font = new Font("Segoe UI", 9F);
+            FormBorderStyle = FormBorderStyle.None;
+            MinimumSize = new Size(800, 500);
+            Name = "frmEmployeeList";
+            Text = "Nhân viên";
+            Load += frmEmployeeList_Load;
+            pnlToolbar.ResumeLayout(false);
+            flpToolbar.ResumeLayout(false);
+            flpToolbar.PerformLayout();
+            splEmp.Panel1.ResumeLayout(false);
+            splEmp.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splEmp).EndInit();
+            splEmp.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvEmployees).EndInit();
+            pnlEmpDetail.ResumeLayout(false);
+            pnlEmpDetail.PerformLayout();
+            stsEmp.ResumeLayout(false);
+            stsEmp.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)erpEmp).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
+        }
+        #endregion
+
+        private Panel pnlToolbar;
+        private FlowLayoutPanel flpToolbar;
+        private TextBox txtSearch;
+        private Button btnSearch;
+        private Button btnRefresh;
+        private Button btnAdd;
+        private Button btnSave;
+        private Button btnToggleLock;
+        private Button btnResetPassword;
+        private SplitContainer splEmp;
+        private DataGridView dgvEmployees;
+        private DataGridViewTextBoxColumn colFullName;
+        private DataGridViewTextBoxColumn colPhone;
+        private DataGridViewTextBoxColumn colRole;
+        private DataGridViewTextBoxColumn colUsername;
+        private DataGridViewTextBoxColumn colEmpStatus;
+        private Panel pnlEmpDetail;
+        private Label lblFullName;
+        private TextBox txtFullName;
+        private Label lblPhone;
+        private TextBox txtPhone;
+        private Label lblRole;
+        private ComboBox cboRole;
+        private Label lblUsername;
+        private TextBox txtUsername;
+        private Label lblPassword;
+        private TextBox txtPassword;
+        private Label lblPasswordConfirm;
+        private TextBox txtPasswordConfirm;
+        private CheckBox chkIsActive;
+        private Label lblNote;
+        private TextBox txtNote;
+        private StatusStrip stsEmp;
+        private ToolStripStatusLabel lblEmpCount;
+        private ErrorProvider erpEmp;
+    }
+}
