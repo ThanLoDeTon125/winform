@@ -15,8 +15,11 @@ namespace winform_cuoi_ki
 
         private void InitializeComponent()
         {
-            Color mauNau = Color.FromArgb(109, 58, 32);
-            Color mauNen = Color.FromArgb(245, 240, 232);
+            Color mauNau = Color.FromArgb(125, 68, 39);
+            Color mauCamNhat = Color.FromArgb(242, 201, 160);
+            Color mauNen = Color.FromArgb(250, 244, 235);
+            Color mauXanh = Color.FromArgb(46, 160, 67);
+            Color mauDo = Color.FromArgb(180, 45, 45);
 
             pnlBanner = new Panel();
             lblBannerTitle = new Label();
@@ -112,20 +115,23 @@ namespace winform_cuoi_ki
             pnlTrai.Name = "pnlTrai";
             pnlTrai.Padding = new Padding(12);
 
+            lblThucDon.BackColor = mauCamNhat;
             lblThucDon.Dock = DockStyle.Top;
             lblThucDon.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             lblThucDon.ForeColor = mauNau;
             lblThucDon.Name = "lblThucDon";
-            lblThucDon.Size = new Size(736, 36);
+            lblThucDon.Padding = new Padding(8, 0, 0, 0);
+            lblThucDon.Size = new Size(736, 40);
             lblThucDon.Text = "THỰC ĐƠN ĐỒ UỐNG & BÁNH  (CLICK MÓN ĐỂ THÊM VÀO ĐƠN)";
             lblThucDon.TextAlign = ContentAlignment.MiddleLeft;
 
+            pnlTimKiem.BackColor = Color.FromArgb(255, 248, 238);
             pnlTimKiem.Controls.Add(txtTimKiem);
             pnlTimKiem.Controls.Add(lblTimKiem);
             pnlTimKiem.Dock = DockStyle.Top;
             pnlTimKiem.Name = "pnlTimKiem";
-            pnlTimKiem.Padding = new Padding(0, 4, 0, 8);
-            pnlTimKiem.Size = new Size(736, 40);
+            pnlTimKiem.Padding = new Padding(8, 4, 8, 8);
+            pnlTimKiem.Size = new Size(736, 44);
 
             lblTimKiem.AutoSize = true;
             lblTimKiem.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
@@ -159,14 +165,17 @@ namespace winform_cuoi_ki
             pnlPhai.Name = "pnlPhai";
             pnlPhai.Padding = new Padding(10);
 
+            lblHoaDonTitle.BackColor = mauCamNhat;
             lblHoaDonTitle.Dock = DockStyle.Top;
             lblHoaDonTitle.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             lblHoaDonTitle.ForeColor = mauNau;
             lblHoaDonTitle.Name = "lblHoaDonTitle";
-            lblHoaDonTitle.Size = new Size(414, 32);
+            lblHoaDonTitle.Padding = new Padding(8, 0, 0, 0);
+            lblHoaDonTitle.Size = new Size(414, 40);
             lblHoaDonTitle.Text = "HÓA ĐƠN ĐẶT HÀNG";
             lblHoaDonTitle.TextAlign = ContentAlignment.MiddleLeft;
 
+            pnlThongTinDon.BackColor = Color.White;
             pnlThongTinDon.Controls.Add(txtGhiChu);
             pnlThongTinDon.Controls.Add(lblGhiChu);
             pnlThongTinDon.Controls.Add(cboLoaiDon);
@@ -175,15 +184,17 @@ namespace winform_cuoi_ki
             pnlThongTinDon.Controls.Add(lblMaDon);
             pnlThongTinDon.Dock = DockStyle.Top;
             pnlThongTinDon.Name = "pnlThongTinDon";
-            pnlThongTinDon.Size = new Size(414, 100);
+            pnlThongTinDon.Padding = new Padding(4);
+            pnlThongTinDon.Size = new Size(414, 108);
 
             lblMaDon.AutoSize = true;
             lblMaDon.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lblMaDon.ForeColor = mauDo;
             lblMaDon.Location = new Point(4, 8);
             lblMaDon.Name = "lblMaDon";
             lblMaDon.Text = "Đơn hàng: HD2026…";
 
-            btnDonMoi.BackColor = Color.FromArgb(46, 160, 67);
+            btnDonMoi.BackColor = mauXanh;
             btnDonMoi.FlatStyle = FlatStyle.Flat;
             btnDonMoi.ForeColor = Color.White;
             btnDonMoi.Location = new Point(250, 4);
@@ -220,9 +231,18 @@ namespace winform_cuoi_ki
             dgvHoaDon.AllowUserToDeleteRows = false;
             dgvHoaDon.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvHoaDon.BackgroundColor = Color.White;
-            dgvHoaDon.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvHoaDon.BorderStyle = BorderStyle.None;
+            dgvHoaDon.ColumnHeadersDefaultCellStyle.BackColor = mauNau;
+            dgvHoaDon.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvHoaDon.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dgvHoaDon.ColumnHeadersHeight = 34;
+            dgvHoaDon.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvHoaDon.EnableHeadersVisualStyles = false;
             dgvHoaDon.Columns.AddRange(new DataGridViewColumn[] { colTenMon, colSL, colDonGia, colThanhTien });
+            dgvHoaDon.DefaultCellStyle.SelectionBackColor = Color.FromArgb(210, 160, 110);
+            dgvHoaDon.DefaultCellStyle.SelectionForeColor = Color.Black;
             dgvHoaDon.Dock = DockStyle.Fill;
+            dgvHoaDon.GridColor = Color.FromArgb(230, 210, 190);
             dgvHoaDon.MultiSelect = false;
             dgvHoaDon.Name = "dgvHoaDon";
             dgvHoaDon.ReadOnly = true;
@@ -243,6 +263,7 @@ namespace winform_cuoi_ki
             colThanhTien.Name = "colThanhTien";
             colThanhTien.ReadOnly = true;
 
+            pnlTongKet.BackColor = mauCamNhat;
             pnlTongKet.Controls.Add(btnDong);
             pnlTongKet.Controls.Add(btnThanhToan);
             pnlTongKet.Controls.Add(btnXoaDong);
@@ -254,8 +275,8 @@ namespace winform_cuoi_ki
             pnlTongKet.Controls.Add(lblTongTienHangCaption);
             pnlTongKet.Dock = DockStyle.Bottom;
             pnlTongKet.Name = "pnlTongKet";
-            pnlTongKet.Padding = new Padding(4);
-            pnlTongKet.Size = new Size(414, 160);
+            pnlTongKet.Padding = new Padding(8);
+            pnlTongKet.Size = new Size(414, 168);
 
             lblTongTienHangCaption.AutoSize = true;
             lblTongTienHangCaption.Location = new Point(8, 12);
@@ -297,11 +318,15 @@ namespace winform_cuoi_ki
             lblKhachCanTra.Text = "0 đ";
             lblKhachCanTra.TextAlign = ContentAlignment.MiddleRight;
 
+            btnXoaDong.BackColor = mauDo;
+            btnXoaDong.FlatStyle = FlatStyle.Flat;
+            btnXoaDong.FlatAppearance.BorderSize = 0;
+            btnXoaDong.ForeColor = Color.White;
             btnXoaDong.Location = new Point(8, 116);
             btnXoaDong.Name = "btnXoaDong";
             btnXoaDong.Size = new Size(90, 36);
             btnXoaDong.Text = "Xóa dòng";
-            btnXoaDong.UseVisualStyleBackColor = true;
+            btnXoaDong.UseVisualStyleBackColor = false;
             btnXoaDong.Click += btnXoaDong_Click;
 
             btnThanhToan.Anchor = AnchorStyles.Top | AnchorStyles.Right;
@@ -317,11 +342,15 @@ namespace winform_cuoi_ki
             btnThanhToan.Click += btnThanhToan_Click;
 
             btnDong.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnDong.BackColor = Color.White;
+            btnDong.FlatStyle = FlatStyle.Flat;
+            btnDong.FlatAppearance.BorderColor = mauNau;
+            btnDong.ForeColor = mauNau;
             btnDong.Location = new Point(300, 112);
             btnDong.Name = "btnDong";
             btnDong.Size = new Size(100, 40);
             btnDong.Text = "Đóng";
-            btnDong.UseVisualStyleBackColor = true;
+            btnDong.UseVisualStyleBackColor = false;
             btnDong.Click += btnDong_Click;
 
             // Form
